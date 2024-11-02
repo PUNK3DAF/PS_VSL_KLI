@@ -5,6 +5,8 @@
 package forme;
 
 import komunikacija.Komunikacija;
+import operacija.Operacije;
+import transfer.KlijentskiZahtev;
 import transfer.ServerskiOdgovor;
 
 /**
@@ -18,7 +20,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
      */
     public KlijentskaForma() {
         initComponents();
-        pokreniKlijent();
+        pokreniKl();
     }
 
     /**
@@ -45,6 +47,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
         jLabelKoriscenaSlova = new javax.swing.JLabel();
         jLabelBrPokusaja = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jButtonPokreni = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,6 +68,13 @@ public class KlijentskaForma extends javax.swing.JFrame {
         jLabelBrPokusaja.setText("jLabel6");
 
         jLabel6.setText("slovo");
+
+        jButtonPokreni.setText("POKRENI IGRU");
+        jButtonPokreni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPokreniActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,13 +103,19 @@ public class KlijentskaForma extends javax.swing.JFrame {
                         .addComponent(jTextFieldKlSlovo1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(jTextFieldKlSlovo2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(37, 37, 37)
-                .addComponent(jTextFieldKlSlovo3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(jTextFieldKlSlovo4, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addComponent(jTextFieldKlSlovo5, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jTextFieldKlSlovo3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(jTextFieldKlSlovo4, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addComponent(jTextFieldKlSlovo5, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonPokreni, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -131,10 +147,15 @@ public class KlijentskaForma extends javax.swing.JFrame {
                     .addComponent(jTextFieldKlSlovo5, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldPogadjanje, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonPogodi))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextFieldPogadjanje, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonPogodi)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jButtonPokreni, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(38, 38, 38)
                 .addComponent(jLabelKoriscenaSlova)
                 .addGap(27, 27, 27)
@@ -144,6 +165,18 @@ public class KlijentskaForma extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonPokreniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPokreniActionPerformed
+
+        KlijentskiZahtev kz = new KlijentskiZahtev(null, Operacije.POKRENI_IGRU);
+        Komunikacija.getInstance().posaljiZahtev(kz);
+
+        ServerskiOdgovor so = Komunikacija.getInstance().primiOdgovor();
+        String rec = (String) so.getOdgovor();
+        jTextFieldPogadjanje.setText(rec);
+        jTextFieldPogadjanje.setEditable(true);
+
+    }//GEN-LAST:event_jButtonPokreniActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,6 +215,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonPogodi;
+    private javax.swing.JButton jButtonPokreni;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -198,14 +232,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPogadjanje;
     // End of variables declaration//GEN-END:variables
 
-    private void pokreniKlijent() {
-        ServerskiOdgovor so = Komunikacija.getInstance().primiOdgovor();
-        String rec = (String) so.getOdgovor();
-        jTextFieldKlSlovo1.setEnabled(false);
-        jTextFieldKlSlovo2.setEnabled(false);
-        jTextFieldKlSlovo3.setEnabled(false);
-        jTextFieldKlSlovo4.setEnabled(false);
-        jTextFieldKlSlovo5.setEnabled(false);
+    public void pokreniKlijent(String rec) {
 
         jTextFieldKlSlovo1.setText(String.valueOf(rec.charAt(0)));
         jTextFieldKlSlovo2.setText(String.valueOf(rec.charAt(1)));
@@ -213,5 +240,14 @@ public class KlijentskaForma extends javax.swing.JFrame {
         jTextFieldKlSlovo4.setText(String.valueOf(rec.charAt(3)));
         jTextFieldKlSlovo5.setText(String.valueOf(rec.charAt(4)));
 
+    }
+
+    private void pokreniKl() {
+        jTextFieldKlSlovo1.setEditable(false);
+        jTextFieldKlSlovo2.setEditable(false);
+        jTextFieldKlSlovo3.setEditable(false);
+        jTextFieldKlSlovo4.setEditable(false);
+        jTextFieldKlSlovo5.setEditable(false);
+        jTextFieldPogadjanje.setEditable(false);
     }
 }

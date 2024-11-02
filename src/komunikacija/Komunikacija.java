@@ -4,12 +4,14 @@
  */
 package komunikacija;
 
+import forme.KlijentskaForma;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import operacija.Operacije;
 import transfer.KlijentskiZahtev;
 import transfer.ServerskiOdgovor;
 
@@ -21,6 +23,7 @@ public class Komunikacija {
 
     private static Komunikacija instance;
     private Socket s;
+    private KlijentskaForma kf;
 
     private Komunikacija() {
         try {
