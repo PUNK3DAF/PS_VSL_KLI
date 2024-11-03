@@ -4,7 +4,10 @@
  */
 package forme;
 
+import java.util.List;
+import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
+import model.Slovo;
 import operacija.Operacije;
 import transfer.KlijentskiZahtev;
 import transfer.ServerskiOdgovor;
@@ -14,6 +17,9 @@ import transfer.ServerskiOdgovor;
  * @author vldmrk
  */
 public class KlijentskaForma extends javax.swing.JFrame {
+
+    private static int pokusaji = 0;
+    private static int pogodjeni = 0;
 
     /**
      * Creates new form KlijentskaForma
@@ -62,10 +68,15 @@ public class KlijentskaForma extends javax.swing.JFrame {
         jLabel5.setText("5. slovo");
 
         jButtonPogodi.setText("POGODI");
+        jButtonPogodi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPogodiActionPerformed(evt);
+            }
+        });
 
-        jLabelKoriscenaSlova.setText("jLabel6");
+        jLabelKoriscenaSlova.setText("Korišćena slova:");
 
-        jLabelBrPokusaja.setText("jLabel6");
+        jLabelBrPokusaja.setText("Preostali broj pokušaja: ");
 
         jLabel6.setText("slovo");
 
@@ -121,12 +132,12 @@ public class KlijentskaForma extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelBrPokusaja, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelKoriscenaSlova, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabelKoriscenaSlova, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelBrPokusaja, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(340, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,11 +183,28 @@ public class KlijentskaForma extends javax.swing.JFrame {
         Komunikacija.getInstance().posaljiZahtev(kz);
 
         ServerskiOdgovor so = Komunikacija.getInstance().primiOdgovor();
-        String rec = (String) so.getOdgovor();
-        jTextFieldPogadjanje.setText(rec);
-        jTextFieldPogadjanje.setEditable(true);
-
+        boolean pokrenuto = (boolean) so.getOdgovor();
+        if (pokrenuto) {
+            jTextFieldPogadjanje.setEditable(true);
+            jButtonPogodi.setEnabled(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "NIJE POKRENUT SERVER", "SERVER SE NIJE POKRENUO", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonPokreniActionPerformed
+
+    private void jButtonPogodiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPogodiActionPerformed
+        pokusaji++;
+        if (pokusaji <= 10) {
+            char slovo = jTextFieldPogadjanje.getText().toUpperCase().charAt(0);
+            jTextFieldPogadjanje.setText("");
+            KlijentskiZahtev kz = new KlijentskiZahtev(slovo, Operacije.POGODI_SLOVO);
+            Komunikacija.getInstance().posaljiZahtev(kz);
+            ServerskiOdgovor so = Komunikacija.getInstance().primiOdgovor();
+            obradiOdgovor(so);
+        } else {
+            JOptionPane.showMessageDialog(this, "NEMA POKUSAJA", "NEMAS VISE POKUSAJA", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonPogodiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,5 +277,35 @@ public class KlijentskaForma extends javax.swing.JFrame {
         jTextFieldKlSlovo4.setEditable(false);
         jTextFieldKlSlovo5.setEditable(false);
         jTextFieldPogadjanje.setEditable(false);
+        jButtonPogodi.setEnabled(false);
+    }
+
+    private void obradiOdgovor(ServerskiOdgovor so) {
+        List<Slovo> slova = (List<Slovo>) so.getOdgovor();
+        if (slova.isEmpty()) {
+            return;
+        }
+        for (Slovo s : slova) {
+            pogodjeni++;
+            switch (s.getPozicija()) {
+                case 1:
+                    jTextFieldKlSlovo1.setText(String.valueOf(s.getKarakter()));
+                    break;
+                case 2:
+                    jTextFieldKlSlovo2.setText(String.valueOf(s.getKarakter()));
+                    break;
+                case 3:
+                    jTextFieldKlSlovo3.setText(String.valueOf(s.getKarakter()));
+                    break;
+                case 4:
+                    jTextFieldKlSlovo4.setText(String.valueOf(s.getKarakter()));
+                    break;
+                case 5:
+                    jTextFieldKlSlovo5.setText(String.valueOf(s.getKarakter()));
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+        }
     }
 }

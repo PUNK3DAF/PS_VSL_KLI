@@ -72,8 +72,8 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelBrPokusaja" min="-2" pref="41" max="-2" attributes="0"/>
-                          <Component id="jLabelKoriscenaSlova" min="-2" pref="41" max="-2" attributes="0"/>
+                          <Component id="jLabelKoriscenaSlova" min="-2" pref="206" max="-2" attributes="0"/>
+                          <Component id="jLabelBrPokusaja" min="-2" pref="144" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -81,7 +81,7 @@
                       <Component id="jLabel6" min="-2" pref="41" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="340" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -170,15 +170,18 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="POGODI"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonPogodiActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelKoriscenaSlova">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel6"/>
+        <Property name="text" type="java.lang.String" value="Kori&#x161;&#x107;ena slova:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelBrPokusaja">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel6"/>
+        <Property name="text" type="java.lang.String" value="Preostali broj poku&#x161;aja: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
